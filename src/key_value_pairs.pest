@@ -1,0 +1,16 @@
+// Silent rules (starting with `_`) are not included in the parse tree
+WHITESPACE = _{ " " | "\t" | NEWLINE }
+
+// Atomic parts of our language
+COMMENT    = { "#" ~ (!NEWLINE ~ ANY)* }
+IDENTIFIER = { (ASCII_ALPHA | "_") ~ (ASCII_ALPHANUMERIC | "_")* }
+VALUE     = { "-"? ~ ASCII_DIGIT+ }
+
+// Main rules
+
+// Matches things like: [], [1, 2, 3], [1,2]
+value_list = { "[" ~ (VALUE ~ ("," ~ VALUE)*)? ~ "]" }
+// e.g. SomeIdentifier: [1, 2, 3]
+pair       = { IDENTIFIER ~ ":" ~ value_list }
+// "Root" parser. Read from start of input to end of input, and find only either comments or pairs.
+file       = { SOI ~ (COMMENT | pair)* ~ EOI }
