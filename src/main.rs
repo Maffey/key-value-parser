@@ -91,7 +91,6 @@ SpacedOut : [ 5,    6, 7 ]
 
         let result = parse_key_value_pairs(data).unwrap();
 
-        // Build the expected result
         let mut expected = HashMap::new();
         expected.insert("SomeValue".to_string(), vec![1, 2, 3, 4]);
         expected.insert("AnotherKey".to_string(), vec![100, -50, 25]);
@@ -105,8 +104,6 @@ SpacedOut : [ 5,    6, 7 ]
     fn test_parsing_fails_on_malformed_number() {
         let data = "BadData: [1, two, 3]";
         let result = parse_key_value_pairs(data);
-
-        // Assert that the parsing correctly returned an error
         assert!(result.is_err());
     }
 
